@@ -1,8 +1,63 @@
-.container {
-    background: white;
-    height: 150px; 
-    width: 375px; 
-    border-radius: 15px; 
+.container, .top, .bot {
     display: flex; 
 }
 
+.container {
+    background: white; 
+    height: 150px; 
+    width: 350px; 
+    border-radius: 10px; 
+    padding: 5px; 
+    flex-direction: column;
+}
+
+.top, .bot {
+    padding-left: 20px; 
+    padding-right: 20px; 
+}
+
+.top {
+    align-items: center;
+    flex: 2; 
+} 
+
+.bot {
+    justify-content: space-between;
+    flex: 1; 
+}
+
+.time {
+    font-size: 60px; 
+    flex: 2; 
+}
+
+.start-pause, .reset, .pomodoro, .short, .long {
+    cursor: pointer; 
+}
+
+.start-pause, .pomodoro, .short, .long {
+    border-radius: 10px;
+    border: hidden;
+}
+
+.start-pause {
+    height: 45px;
+    width: 100px;  
+    margin-right: 10px; 
+}
+
+.start-pause:hover, .reset:hover, .pomodoro:hover, 
+.short:hover, .long:hover {
+    opacity: 0.75;
+    transition: 0.15;  
+}
+
+.start-pause:active, .reset:active, .pomodoro:active, 
+.short:active, .long:active {
+    opacity: 0.5; 
+    transition: 0.15; 
+}
+
+.pomodoro, .short, .long {
+    width: 30%; 
+}
