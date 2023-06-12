@@ -6,6 +6,8 @@ function Timer() {
     const [time, setTime] = useState({min: 20, sec: 0, decreasing: false, default: true}); 
     const [display, setDisplay] = useState(null); 
     const [mode, setMode] = useState("pomodoro"); 
+    const [cycle, setCycle] = useState(0); 
+    const [automatic, setAutomatic] = useState(false); 
 
     useEffect(() => {
         if (time.decreasing || time.default) {
@@ -17,14 +19,30 @@ function Timer() {
         if (time.min < 0) setTime((oldTime) => {return {...oldTime, min: 0}})
         if (time.sec < 0) setTime((oldTime) => {return {...oldTime, sec: 0}})   
 
+        if (time.min === 0 && time.sec === 0) {
+            if (mode === "pomodoro") {
+                if (cycle !== 0 && cycle % 4 === 0) {
+                    handleMode("long"); 
+                } else {
+                    handleMode("short"); 
+                }
+            } else if (mode === "short" || mode === "long") {
+                handleMode("pomodoro"); 
+                setCycle(cycle+1); 
+            } 
+        }
+
         if (time.decreasing && time.min >= 0 && time.sec >= 0) {
-            setTimeout(() => {
+            const timeoutID = setTimeout(() => {
                 if (time.sec === 0) {   
                     setTime((oldTime) => {return {...oldTime, min: oldTime.min-1, sec: 60}})
                 }
                 setTime((oldTime) => {return {...oldTime, sec: oldTime.sec-1}})
             }, 1000)
-        }
+            return () => {
+                clearTimeout(timeoutID); 
+            }
+        }       
     }, [time]) 
     
     const handleTime = () => {
