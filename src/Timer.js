@@ -3,18 +3,23 @@ import "./Timer.css";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 function Timer() {
-    const [time, setTime] = useState({min: 20, sec: 0, decreasing: false}); 
+    const [time, setTime] = useState({min: 20, sec: 0, decreasing: false, default: true}); 
     const [display, setDisplay] = useState(null); 
     const [mode, setMode] = useState("pomodoro"); 
 
     useEffect(() => {
-        setDisplay(time.min.toString().padStart(2, '0') + ":" + time.sec.toString().padStart(2, '0')); 
+        if (time.decreasing || time.default) {
+            setDisplay(time.min.toString().padStart(2, '0') + ":" + time.sec.toString().padStart(2, '0')); 
+        } 
     }, [time]);
 
     useEffect(() => {
+        if (time.min < 0) setTime((oldTime) => {return {...oldTime, min: 0}})
+        if (time.sec < 0) setTime((oldTime) => {return {...oldTime, sec: 0}})   
+
         if (time.decreasing && time.min >= 0 && time.sec >= 0) {
             setTimeout(() => {
-                if (time.sec === 0) {
+                if (time.sec === 0) {   
                     setTime((oldTime) => {return {...oldTime, min: oldTime.min-1, sec: 60}})
                 }
                 setTime((oldTime) => {return {...oldTime, sec: oldTime.sec-1}})
@@ -23,29 +28,33 @@ function Timer() {
     }, [time]) 
     
     const handleTime = () => {
-        return setTime((oldTime) => {return {...oldTime, decreasing: true}})
+        if (!time.decreasing) {
+            return setTime((oldTime) => {return {...oldTime, decreasing: true, default: false}})
+        } else {
+            return setTime((oldTime) => {return {...oldTime, decreasing: false}})
+        }
     }
 
     const handleMode = (str) => {
         if (str === "pomodoro") {
             setMode("pomodoro"); 
-            setTime({min: 20, sec: 0, decreasing: false})     
+            setTime({min: 20, sec: 0, decreasing: false, default: true})     
         } else if (str === "short") {
             setMode("short"); 
-            setTime({min: 5, sec: 0, decreasing: false});
+            setTime({min: 5, sec: 0, decreasing: false, default: true});
         } else if (str === "long") {
             setMode("long"); 
-            setTime({min: 15, sec: 0, decreasing: false});
+            setTime({min: 15, sec: 0, decreasing: false, default: true});
         }
     }
 
     const handleReset = () => {
         if (mode === "pomodoro") {
-            setTime({min: 20, sec: 0, decreasing: false});
+            setTime({min: 20, sec: 0, decreasing: false, default: true});
         } else if (mode === "short") {
-            setTime({min: 5, sec: 0, decreasing: false});
+            setTime({min: 5, sec: 0, decreasing: false, default: true});
         } else if (mode === "long") {
-            setTime({min: 15, sec: 0, decreasing: false}); 
+            setTime({min: 15, sec: 0, decreasing: false, default: true}); 
         }
     }
 
@@ -58,7 +67,7 @@ function Timer() {
                 </div>
 
                 <button className="start-pause" onClick={() => handleTime()}>
-                    Start
+                    {time.decreasing ? "Pause" : "Start"}
                 </button>
 
                 <RestartAltIcon className="reset" onClick={() => handleReset()}/>
