@@ -8,7 +8,7 @@ function Timer() {
     const [display, setDisplay] = useState(null); 
     const [mode, setMode] = useState("pomodoro"); 
     const [cycle, setCycle] = useState(0); 
-    const [automatic, setAutomatic] = useState(true); 
+    const [automatic, setAutomatic] = useState(false); 
     const [customize, setCustomize] = useState(false); 
 
     useEffect(() => {
@@ -83,10 +83,14 @@ function Timer() {
         setCustomize((oldCustomize) => {return !oldCustomize}) 
     }
 
-    console.log(customize); 
+    const handleAutomatic = () => {
+        setAutomatic((oldAutomatic) => {return !oldAutomatic})
+    }
+
+    console.log(automatic); 
     return ( 
-        // <div className="main">
-            <div className="container">
+        <div className="main">
+            <div className={customize ? "expandContainer" : "container"}>
                 <div className="top">
                     <div className="time">
                         {display}
@@ -113,13 +117,13 @@ function Timer() {
                     </button>
 
                     <SettingsIcon className="settings" onClick={() => handleOptions()}/>
-
-                    {/* </div>
-                    <div className={customize ? "hideSettings" : "showSettings"}> */}
                 </div>
-          
-                    
-            {/* </div> */}
+            </div>
+            <div className={customize ? "showSettings" : "hideSettings"}>
+                <input className="check" type="checkbox" 
+                onChange={() => handleAutomatic()} />
+                <label>Auto-transition Timer</label>
+            </div>
         </div>
     )
 }
