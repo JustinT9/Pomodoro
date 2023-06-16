@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";  
 import "./Timer.css"; 
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 function Timer() {
     const [time, setTime] = useState({min: 20, sec: 0, decreasing: false, default: true}); 
@@ -8,6 +9,7 @@ function Timer() {
     const [mode, setMode] = useState("pomodoro"); 
     const [cycle, setCycle] = useState(0); 
     const [automatic, setAutomatic] = useState(true); 
+    const [customize, setCustomize] = useState(false); 
 
     useEffect(() => {
         if (time.decreasing || time.default) {
@@ -77,33 +79,47 @@ function Timer() {
         }
     }
 
+    const handleOptions = () => {
+        setCustomize((oldCustomize) => {return !oldCustomize}) 
+    }
+
+    console.log(customize); 
     return ( 
-        <div className="container">
-            <div className="top">
-                <div className="time">
-                    {display}
+        // <div className="main">
+            <div className="container">
+                <div className="top">
+                    <div className="time">
+                        {display}
+                    </div>
+
+                    <button className="start-pause" onClick={() => handleTime()}>
+                        {time.decreasing ? "Pause" : "Start"}
+                    </button>
+
+                    <RestartAltIcon className="reset" onClick={() => handleReset()}/>
                 </div>
 
-                <button className="start-pause" onClick={() => handleTime()}>
-                    {time.decreasing ? "Pause" : "Start"}
-                </button>
+                <div className="bot">
+                    <button className="pomodoro" onClick={() => handleMode("pomodoro")}>
+                        Pomodoro
+                    </button>
 
-                <RestartAltIcon className="reset" onClick={() => handleReset()}/>
-            </div>
+                    <button className="short" onClick={() => handleMode("short")}>
+                        Short Break
+                    </button>
 
-            <div className="bot">
-                <button className="pomodoro" onClick={() => handleMode("pomodoro")}>
-                    Pomodoro
-                </button>
+                    <button className="long" onClick={() => handleMode("long")}>
+                        Long Break
+                    </button>
 
-                <button className="short" onClick={() => handleMode("short")}>
-                    Short Break
-                </button>
+                    <SettingsIcon className="settings" onClick={() => handleOptions()}/>
 
-                <button className="long" onClick={() => handleMode("long")}>
-                    Long Break
-                </button>
-            </div>
+                    {/* </div>
+                    <div className={customize ? "hideSettings" : "showSettings"}> */}
+                </div>
+          
+                    
+            {/* </div> */}
         </div>
     )
 }

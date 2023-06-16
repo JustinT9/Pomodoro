@@ -3,8 +3,8 @@
 }
 
 .container {
-    background: white; 
-    height: 150px; 
+    background: white;
+    height: 150px;  
     width: 350px; 
     border-radius: 10px; 
     padding: 5px; 
@@ -12,8 +12,8 @@
 }
 
 .top, .bot {
-    padding-left: 20px; 
-    padding-right: 20px; 
+    padding-left: 15px; 
+    padding-right: 15px; 
 }
 
 .top {
@@ -22,17 +22,19 @@
 } 
 
 .bot {
+    padding-bottom: 10px; 
     justify-content: space-between;
+    align-items: center;
     flex: 1; 
 }
 
 .time {
     font-size: 60px; 
     flex: 2; 
-}
+}   
 
 .start-pause, .reset, .pomodoro, 
-.short, .long {
+.short, .long, .settings {
     cursor: pointer; 
 }
 
@@ -57,9 +59,14 @@
 .start-pause:active, .reset:active, .pomodoro:active, 
 .short:active, .long:active {
     opacity: 0.5; 
-    transition: 0.15; 
+    transition: 0.15;   
 }
 
-.pomodoro, .short, .long {
-    width: 30%; 
+.pomodoro, .short, .long, .settings {
+    width: 28%; 
+    height: 100%; 
 }
+
+
+
+
