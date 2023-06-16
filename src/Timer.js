@@ -18,7 +18,7 @@ function Timer() {
     useEffect(() => {
         if (time.min < 0) setTime((oldTime) => {return {...oldTime, min: 0}})
         if (time.sec < 0) setTime((oldTime) => {return {...oldTime, sec: 0}})   
-
+        
         if (time.min === 0 && time.sec === 0) {
             if (mode === "pomodoro") {
                 if (cycle !== 0 && cycle % 4 === 0) {
@@ -30,6 +30,7 @@ function Timer() {
                 handleMode("pomodoro"); 
                 setCycle(cycle+1); 
             } 
+            if (automatic) setTime((oldTime) => {return {...oldTime, decreasing: true}})
         }
 
         if (time.decreasing && time.min >= 0 && time.sec >= 0) {
