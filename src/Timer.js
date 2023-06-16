@@ -7,7 +7,7 @@ function Timer() {
     const [display, setDisplay] = useState(null); 
     const [mode, setMode] = useState("pomodoro"); 
     const [cycle, setCycle] = useState(0); 
-    const [automatic, setAutomatic] = useState(false); 
+    const [automatic, setAutomatic] = useState(true); 
 
     useEffect(() => {
         if (time.decreasing || time.default) {
@@ -38,13 +38,13 @@ function Timer() {
                     setTime((oldTime) => {return {...oldTime, min: oldTime.min-1, sec: 60}})
                 }
                 setTime((oldTime) => {return {...oldTime, sec: oldTime.sec-1}})
-            }, 1000)
+            }, 1)
             return () => {
                 clearTimeout(timeoutID); 
             }
         }       
     }, [time]) 
-    
+     
     const handleTime = () => {
         if (!time.decreasing) {
             return setTime((oldTime) => {return {...oldTime, decreasing: true, default: false}})
@@ -76,7 +76,6 @@ function Timer() {
         }
     }
 
-    console.log(time.decreasing); 
     return ( 
         <div className="container">
             <div className="top">
