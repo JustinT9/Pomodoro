@@ -4,7 +4,10 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 function Timer() {
-    const [time, setTime] = useState({min: 20, sec: 0, decreasing: false, default: true}); 
+    const [pomoTime, setpomoTime] = useState({min: 25, sec: 0, decreasing: false, default: true}); 
+    const [shortTime, setshortTime] = useState({min: 5, sec: 0, decreasing: false, default: true}); 
+    const [longTime, setlongTime] = useState({min: 15, sec: 0, decreasing: false, default: true}); 
+    const [time, setTime] = useState(pomoTime); 
     const [display, setDisplay] = useState(null); 
     const [mode, setMode] = useState("pomodoro"); 
     const [cycle, setCycle] = useState(0); 
@@ -18,9 +21,16 @@ function Timer() {
     }, [time]);
 
     useEffect(() => {
-        if (time.min < 0) setTime((oldTime) => {return {...oldTime, min: 0}})
-        if (time.sec < 0) setTime((oldTime) => {return {...oldTime, sec: 0}})   
-        
+        if (mode === "pomodoro" && pomoTime.min > 0 && pomoTime.min < 361) {
+            setTime(pomoTime); 
+        } else if (mode === "short" && shortTime.min > 0 && shortTime.min < 361) {
+            setTime(shortTime); 
+        } else if (mode === "long") {
+            setTime(longTime); 
+        }
+    }, [pomoTime, shortTime, longTime]); 
+
+    useEffect(() => {
         if (time.min === 0 && time.sec === 0) {
             if (mode === "pomodoro") {
                 if (cycle !== 0 && cycle % 4 === 0) {
@@ -47,7 +57,7 @@ function Timer() {
             }
         }       
     }, [time]) 
-     
+
     const handleTime = () => {
         if (!time.decreasing) {
             return setTime((oldTime) => {return {...oldTime, decreasing: true, default: false}})
@@ -59,23 +69,23 @@ function Timer() {
     const handleMode = (str) => {
         if (str === "pomodoro") {
             setMode("pomodoro"); 
-            setTime({min: 20, sec: 0, decreasing: false, default: true})     
+            setTime(pomoTime);      
         } else if (str === "short") {
             setMode("short"); 
-            setTime({min: 5, sec: 0, decreasing: false, default: true});
+            setTime(shortTime);
         } else if (str === "long") {
             setMode("long"); 
-            setTime({min: 15, sec: 0, decreasing: false, default: true});
+            setTime(longTime);
         }
     }
 
     const handleReset = () => {
         if (mode === "pomodoro") {
-            setTime({min: 20, sec: 0, decreasing: false, default: true});
+            setTime(pomoTime);
         } else if (mode === "short") {
-            setTime({min: 5, sec: 0, decreasing: false, default: true});
+            setTime(shortTime);
         } else if (mode === "long") {
-            setTime({min: 15, sec: 0, decreasing: false, default: true}); 
+            setTime(longTime); 
         }
     }
 
@@ -87,7 +97,19 @@ function Timer() {
         setAutomatic((oldAutomatic) => {return !oldAutomatic})
     }
 
-    console.log(automatic); 
+    const handleChange = (e) => {
+        const name = e.target.name; 
+        const value = e.target.value; 
+
+        if (e.target.id === "Pomodoro") {
+            setpomoTime({...pomoTime, [name]: value});
+        } else if (e.target.id === "Short") {
+            setshortTime({...shortTime, [name]: value});
+        } else if (e.target.id === "Long") {
+            setlongTime({...longTime, [name]: value});
+        }
+    }
+
     return ( 
         <div className="main">
             <div className={customize ? "expandContainer" : "container"}>
@@ -129,23 +151,49 @@ function Timer() {
                 
 
                 <div className="form">
-                    <div className="form-pomodoro" >
-                        <label>Pomodoro</label>
-                        <input className="num"/>
+                    <div className="form-control" >
+                        <label htmlFor="Pomodoro">Pomodoro</label>
+                        <input 
+                            className="num"
+                            type="number"
+                            id="Pomodoro"
+                            name="min"
+                            value={pomoTime.min}
+                            onChange={handleChange}
+                        />
                     </div >
 
-                    <div className="form-short">
-                        <label>Short</label>
-                        <input className="num"/>
+                    <div className="form-control">
+                        <label htmlFor="Short">Short</label>
+                        <input 
+                            className="num"
+                            type="number"
+                            id="Short"
+                            name="min"
+                            value={shortTime.min}
+                            onChange={handleChange}
+                        />
                     </div>
 
-                    <div className="form-long">
-                        <label>Long</label>
-                        <input className="num"/>
+                    <div className="form-control">
+                        <label htmlFor="Long">Long</label>
+                        <input 
+                            className="num"
+                            type="number"
+                            id="Long"
+                            name="min"
+                            value={longTime.min}
+                            onChange={handleChange}
+                        />
                     </div>
                 </div>
 
-                <button className="save">Save</button>
+                <button 
+                    className="save" 
+                    type="submit" 
+                    onClick={() => handleOptions()}>
+                        Save
+                </button>
             </div>
         </div>
     )

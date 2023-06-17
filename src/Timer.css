@@ -1,7 +1,6 @@
 .main, .expandContainer, .container, 
 .top, .bot, .showSettings, .clickers, 
-.form, .form-pomodoro, .form-short, 
-.form-long {
+.form, .form-control {
     display: flex; 
 }
 
@@ -16,8 +15,7 @@
 }
 
 .main, .expandContainer, .container, 
-.showSettings, .form-pomodoro, .form-short, 
-.form-long {
+.showSettings, .form-control {
     flex-direction: column; 
 }
 
@@ -136,7 +134,7 @@
     border-color: grey; 
 } 
 
-.form-pomodoro, .form-short, .form-long {
+.form-control {
     justify-content: space-evenly;
     flex: 1; 
 }
