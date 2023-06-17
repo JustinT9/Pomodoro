@@ -120,9 +120,32 @@ function Timer() {
                 </div>
             </div>
             <div className={customize ? "showSettings" : "hideSettings"}>
-                <input className="check" type="checkbox" 
-                onChange={() => handleAutomatic()} />
-                <label>Auto-transition Timer</label>
+                <div className="clickers">
+                    <input className="check" type="checkbox" 
+                    onChange={() => handleAutomatic()} />
+                    
+                    <label>Auto-transition Timer</label>
+                </div>
+                
+
+                <div className="form">
+                    <div className="form-pomodoro" >
+                        <label>Pomodoro</label>
+                        <input className="num"/>
+                    </div >
+
+                    <div className="form-short">
+                        <label>Short</label>
+                        <input className="num"/>
+                    </div>
+
+                    <div className="form-long">
+                        <label>Long</label>
+                        <input className="num"/>
+                    </div>
+                </div>
+
+                <button className="save">Save</button>
             </div>
         </div>
     )

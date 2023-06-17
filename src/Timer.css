@@ -1,16 +1,27 @@
 .main, .expandContainer, .container, 
-.top, .bot, .showSettings {
+.top, .bot, .showSettings, .clickers, 
+.form, .form-pomodoro, .form-short, 
+.form-long {
     display: flex; 
 }
 
-.main, .expandContainer, .container, 
-.showSettings {
+.main {
+    height: 300px; 
+    width: 350px; 
+}
+
+.expandContainer, .container {
     height: 150px;  
     width: 350px; 
 }
 
-.main, .expandContainer, .container {
+.main, .expandContainer, .container, 
+.showSettings, .form-pomodoro, .form-short, 
+.form-long {
     flex-direction: column; 
+}
+
+.main, .expandContainer, .container {
     position: absolute; 
 }
 
@@ -53,7 +64,7 @@
 }   
 
 .start-pause, .reset, .pomodoro, 
-.short, .long, .settings {
+.short, .long, .settings, .save {
     cursor: pointer; 
 }
 
@@ -69,19 +80,22 @@
     margin-right: 10px; 
 }
 
-.start-pause:hover, .reset:hover, .pomodoro:hover, 
-.short:hover, .long:hover {
+.start-pause:hover, .reset:hover, 
+.pomodoro:hover, .short:hover, 
+.long:hover, .save:hover {
     opacity: 0.75;
     transition: 0.15;  
 }
 
-.start-pause:active, .reset:active, .pomodoro:active, 
-.short:active, .long:active {
+.start-pause:active, .reset:active, 
+.pomodoro:active, .short:active, 
+.long:active, .save:active {
     opacity: 0.5; 
     transition: 0.15;   
 }
 
-.pomodoro, .short, .long, .settings {
+.pomodoro, .short, .long, 
+.settings {
     width: 28%; 
     height: 100%; 
 }
@@ -91,15 +105,50 @@
 }
 
 .showSettings {
+    height: 250px;  
+    width: 350px; 
     transform: translateY(150px);
     border-radius: 0px 0px 10px 10px;
     padding: 20px; 
-    align-items: center;
+    justify-content: space-between;
+}
+
+.clickers {
+    flex: 1; 
 }
 
 .check {
+    height: 20px; 
+    width: 20px; 
     margin-right: 10px; 
 }
+
+.form {
+    flex: 1; 
+}
+
+.num {
+    width: 90%;
+    height: 40%; 
+    padding: 10px; 
+    border-radius: 10px; 
+    border-style: solid; 
+    border-color: grey; 
+} 
+
+.form-pomodoro, .form-short, .form-long {
+    justify-content: space-evenly;
+    flex: 1; 
+}
+
+.save {
+    background: #FFC0CB; 
+    font-size: 20px; 
+    height: 45px;
+    border: hidden; 
+    border-radius: 10px; 
+}
+
 
 
 
