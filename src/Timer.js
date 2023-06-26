@@ -16,6 +16,7 @@ function Timer() {
     const [automatic, setAutomatic] = useState(false); 
     const [customize, setCustomize] = useState(false); 
     const [mute, setMute] = useState(false); 
+    const [volume, setVolume] = useState(50);
 
     // to render the time display for the first time page is loaded or when it is decreasing in time  
     useEffect(() => {
@@ -42,6 +43,12 @@ function Timer() {
             document.title = "Sone"; 
         }
     }, [display])
+    
+    useEffect(() => { 
+        if (mute) { 
+            setVolume(0);
+        } 
+    }, [mute])
 
     useEffect(() => {
         // to make mode switching deterministic based on cycles 
@@ -135,7 +142,9 @@ function Timer() {
 
     const handleVolume = (e) => {
         if (mute) {
-            e.value = 0; 
+            setVolume(0); 
+        } else {
+            setVolume(e.target.value);
         }
     }
 
@@ -223,10 +232,12 @@ function Timer() {
                 <div className="volume"> 
                     {mute ? <VolumeOffIcon className="volume-icon" onClick={() => handleMute()}/> : 
                     <VolumeUpIcon className="volume-icon" onClick={() => handleMute()}/> }
+                    {console.log(volume)}
 
                     <input 
                         className="volume-adjust"
                         type="range"
+                        value={volume}
                         onChange={handleVolume}
                     />
                 </div>
