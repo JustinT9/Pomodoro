@@ -16,6 +16,7 @@ function Timer() {
     const [automatic, setAutomatic] = useState(false); 
     const [customize, setCustomize] = useState(false); 
     const [mute, setMute] = useState(false); 
+    const [volume, setVolume] = useState(50);
 
     // to render the time display for the first time page is loaded or when it is decreasing in time  
     useEffect(() => {
@@ -43,6 +44,12 @@ function Timer() {
         }
     }, [display])
 
+    useEffect(() => {  
+        if (mute) {
+            setVolume(0); 
+        } 
+    }, [mute])
+    
     useEffect(() => {
         // to make mode switching deterministic based on cycles 
         if (time.min === 0 && time.sec === 0) {
@@ -134,8 +141,12 @@ function Timer() {
     }
 
     const handleVolume = (e) => {
-        if (mute) {
-            e.value = 0; 
+        setVolume(e.target.value);
+        console.log(e.target.value); 
+        if (e.target.value === "0") {
+            setMute(true); 
+        } else {
+            setMute(false);
         }
     }
 
@@ -227,8 +238,20 @@ function Timer() {
                     <input 
                         className="volume-adjust"
                         type="range"
-   value={volume}
-        setVoluhandleVolume}
+                        value={volume}
+                        onChange={handleVolume}
+                    />
+                </div>
 
+                <button 
+                    className="save" 
+                    type="submit" 
+                    onClick={() => handleOptions()}>
+                        Save
+                </button>
+            </div>
+        </div>
+    )
+}
 
-        
+export default Timer; 
