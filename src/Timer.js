@@ -141,11 +141,7 @@ function Timer() {
     }
 
     const handleVolume = (e) => {
-        if (mute) {
-            setVolume(0); 
-        } else {
-            setVolume(e.target.value);
-        }
+        setVolume(e.target.value);
     }
 
     return ( 
