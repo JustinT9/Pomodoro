@@ -43,13 +43,13 @@ function Timer() {
             document.title = "Sone"; 
         }
     }, [display])
-    
-    useEffect(() => { 
-        if (mute) { 
-            setVolume(0);
+
+    useEffect(() => {  
+        if (mute) {
+            setVolume(0); 
         } 
     }, [mute])
-
+    
     useEffect(() => {
         // to make mode switching deterministic based on cycles 
         if (time.min === 0 && time.sec === 0) {
@@ -142,6 +142,12 @@ function Timer() {
 
     const handleVolume = (e) => {
         setVolume(e.target.value);
+        console.log(e.target.value); 
+        if (e.target.value === "0") {
+            setMute(true); 
+        } else {
+            setMute(false);
+        }
     }
 
     return ( 
@@ -228,7 +234,6 @@ function Timer() {
                 <div className="volume"> 
                     {mute ? <VolumeOffIcon className="volume-icon" onClick={() => handleMute()}/> : 
                     <VolumeUpIcon className="volume-icon" onClick={() => handleMute()}/> }
-                    {console.log(volume)}
 
                     <input 
                         className="volume-adjust"
