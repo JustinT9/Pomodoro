@@ -1,6 +1,6 @@
 .main, .expandContainer, .container, 
 .top, .bot, .showSettings, .clickers, 
-.form, .form-control {
+.form, .form-control, .volume {
     display: flex; 
 }
 
@@ -62,7 +62,8 @@
 }   
 
 .start-pause, .reset, .pomodoro, 
-.short, .long, .settings, .save {
+.short, .long, .settings, .save,
+.volume-icon, .volume-adjust {
     cursor: pointer; 
 }
 
@@ -80,14 +81,16 @@
 
 .start-pause:hover, .reset:hover, 
 .pomodoro:hover, .short:hover, 
-.long:hover, .save:hover {
+.long:hover, .save:hover, 
+.volume-icon:hover {
     opacity: 0.75;
     transition: 0.15;  
 }
 
 .start-pause:active, .reset:active, 
 .pomodoro:active, .short:active, 
-.long:active, .save:active {
+.long:active, .save:active,
+.volume-icon:active {
     opacity: 0.5; 
     transition: 0.15;   
 }
@@ -127,7 +130,7 @@
 
 .num {
     width: 90%;
-    height: 40%; 
+    height: 60%; 
     padding: 10px; 
     border-radius: 10px; 
     border-style: solid; 
@@ -137,6 +140,35 @@
 .form-control {
     justify-content: space-evenly;
     flex: 1; 
+}
+
+.volume {
+    justify-content: center;
+    align-items: center; 
+    flex: 1; 
+}
+
+.volume-adjust {
+    width: 88%; 
+    height: 5%; 
+    margin-left: 5%; 
+    -webkit-appearance: none;
+    appearance: none; 
+    background: grey; 
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: grey; 
+    width: 16px; 
+    height: 16px; 
+    border-radius: 100%; 
+}
+
+.volume-adjust:hover, 
+input[type="range"]:hover::-webkit-slider-thumb {
+    background-color: rgb(88, 88, 88); 
+    transition: 0.3s; 
 }
 
 .save {
