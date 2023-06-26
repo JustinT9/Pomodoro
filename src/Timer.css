@@ -1,16 +1,25 @@
 .main, .expandContainer, .container, 
-.top, .bot, .showSettings {
+.top, .bot, .showSettings, .clickers, 
+.form, .form-control, .volume {
     display: flex; 
 }
 
-.main, .expandContainer, .container, 
-.showSettings {
+.main {
+    height: 300px; 
+    width: 350px; 
+}
+
+.expandContainer, .container {
     height: 150px;  
     width: 350px; 
 }
 
-.main, .expandContainer, .container {
+.main, .expandContainer, .container, 
+.showSettings, .form-control {
     flex-direction: column; 
+}
+
+.main, .expandContainer, .container {
     position: absolute; 
 }
 
@@ -53,7 +62,8 @@
 }   
 
 .start-pause, .reset, .pomodoro, 
-.short, .long, .settings {
+.short, .long, .settings, .save,
+.volume-icon, .volume-adjust {
     cursor: pointer; 
 }
 
@@ -69,19 +79,24 @@
     margin-right: 10px; 
 }
 
-.start-pause:hover, .reset:hover, .pomodoro:hover, 
-.short:hover, .long:hover {
+.start-pause:hover, .reset:hover, 
+.pomodoro:hover, .short:hover, 
+.long:hover, .save:hover, 
+.volume-icon:hover {
     opacity: 0.75;
     transition: 0.15;  
 }
 
-.start-pause:active, .reset:active, .pomodoro:active, 
-.short:active, .long:active {
+.start-pause:active, .reset:active, 
+.pomodoro:active, .short:active, 
+.long:active, .save:active,
+.volume-icon:active {
     opacity: 0.5; 
     transition: 0.15;   
 }
 
-.pomodoro, .short, .long, .settings {
+.pomodoro, .short, .long, 
+.settings {
     width: 28%; 
     height: 100%; 
 }
@@ -91,15 +106,79 @@
 }
 
 .showSettings {
+    height: 250px;  
+    width: 350px; 
     transform: translateY(150px);
     border-radius: 0px 0px 10px 10px;
     padding: 20px; 
-    align-items: center;
+    justify-content: space-between;
+}
+
+.clickers {
+    flex: 1; 
 }
 
 .check {
+    height: 20px; 
+    width: 20px; 
     margin-right: 10px; 
 }
+
+.form {
+    flex: 1; 
+}
+
+.num {
+    width: 90%;
+    height: 60%; 
+    padding: 10px; 
+    border-radius: 10px; 
+    border-style: solid; 
+    border-color: grey; 
+} 
+
+.form-control {
+    justify-content: space-evenly;
+    flex: 1; 
+}
+
+.volume {
+    justify-content: center;
+    align-items: center; 
+    flex: 1; 
+}
+
+.volume-adjust {
+    width: 88%; 
+    height: 5%; 
+    margin-left: 5%; 
+    -webkit-appearance: none;
+    appearance: none; 
+    background: grey; 
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: grey; 
+    width: 16px; 
+    height: 16px; 
+    border-radius: 100%; 
+}
+
+.volume-adjust:hover, 
+input[type="range"]:hover::-webkit-slider-thumb {
+    background-color: rgb(88, 88, 88); 
+    transition: 0.3s; 
+}
+
+.save {
+    background: #FFC0CB; 
+    font-size: 20px; 
+    height: 45px;
+    border: hidden; 
+    border-radius: 10px; 
+}
+
 
 
 
