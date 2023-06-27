@@ -16,7 +16,7 @@ function Timer() {
     const [automatic, setAutomatic] = useState(false); 
     const [customize, setCustomize] = useState(false); 
     const [mute, setMute] = useState(false); 
-    const [volume, setVolume] = useState(50);
+    const [volume, setVolume] = useState({prev: null, curr: null});
 
     // to render the time display for the first time page is loaded or when it is decreasing in time  
     useEffect(() => {
@@ -46,10 +46,14 @@ function Timer() {
 
     useEffect(() => {  
         if (mute) {
-            setVolume(0); 
-        } 
+            setVolume({prev: volume.curr, curr: 0}); 
+        } else if (!volume.prev && !volume.curr) {
+            setVolume({prev: 0, curr: 50});
+        } else {
+            setVolume({prev: volume.curr, curr: volume.prev});
+        }
     }, [mute])
-    
+
     useEffect(() => {
         // to make mode switching deterministic based on cycles 
         if (time.min === 0 && time.sec === 0) {
@@ -123,7 +127,10 @@ function Timer() {
     }
 
     const handleMute = () => {
-        setMute((oldMute) => {return !oldMute});
+        if (parseInt(volume.curr) !== 0 && parseInt(volume.prev) === 0 || 
+            parseInt(volume.curr) === 0 && parseInt(volume.prev) !== 0 || !mute) {
+                setMute((oldMute) => {return !oldMute});
+            }
     }
 
     // used for the input to change based off of what user enters
@@ -141,9 +148,8 @@ function Timer() {
     }
 
     const handleVolume = (e) => {
-        setVolume(e.target.value);
-        console.log(e.target.value); 
-        if (e.target.value === "0") {
+        setVolume((oldVolume) => {return {...oldVolume, curr: e.target.value}})
+        if (parseInt(e.target.value) === 0) {
             setMute(true); 
         } else {
             setMute(false);
@@ -238,7 +244,7 @@ function Timer() {
                     <input 
                         className="volume-adjust"
                         type="range"
-                        value={volume}
+                        value={volume.curr}
                         onChange={handleVolume}
                     />
                 </div>
