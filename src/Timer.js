@@ -36,6 +36,7 @@ function Timer() {
         }
     }, [pomoTime, shortTime, longTime]); 
 
+    // to render the tab title and display the time 
     useEffect(() => {
         if (time.decreasing) {
             document.title = display + " | Sone"; 
@@ -44,6 +45,7 @@ function Timer() {
         }
     }, [display])
 
+    // to render the volume display 
     useEffect(() => {  
         if (mute) {
             setVolume({prev: volume.curr, curr: 0}); 
@@ -52,7 +54,12 @@ function Timer() {
         } else {
             setVolume({prev: volume.curr, curr: volume.prev});
         }
-    }, [mute])
+    }, [mute])  
+
+    // update the volume 
+    useEffect(() => {
+        setVolume(volume); 
+    }, [volume]) 
 
     useEffect(() => {
         // to make mode switching deterministic based on cycles 
@@ -118,19 +125,23 @@ function Timer() {
         }
     }
 
+    // for when options are shown 
     const handleOptions = () => {
         setCustomize((oldCustomize) => {return !oldCustomize});
     }
 
+    // when automatic transition is activated
     const handleAutomatic = () => {
         setAutomatic((oldAutomatic) => {return !oldAutomatic});
     }
 
+    // when the user clicks on the volume button or if either the previous 
+    // or current volume is nonzero to handle when both are zero then you cannot unmute 
     const handleMute = () => {
         if (parseInt(volume.curr) !== 0 && parseInt(volume.prev) === 0 || 
             parseInt(volume.curr) === 0 && parseInt(volume.prev) !== 0 || !mute) {
                 setMute((oldMute) => {return !oldMute});
-            }
+        }
     }
 
     // used for the input to change based off of what user enters
@@ -147,8 +158,10 @@ function Timer() {
         }
     }
 
+    // update the volume value and setting mute when volume is 0 
     const handleVolume = (e) => {
         setVolume((oldVolume) => {return {...oldVolume, curr: e.target.value}})
+
         if (parseInt(e.target.value) === 0) {
             setMute(true); 
         } else {
@@ -198,8 +211,8 @@ function Timer() {
                     <label>Auto-transition Timer</label>
                 </div>
                 
-
-                <div className="form">
+                {/* component for time inputs */}
+                <div className="form"> 
                     <div className="form-control" >
                         <label htmlFor="Pomodoro">Pomodoro</label>
                         <input 
@@ -237,6 +250,16 @@ function Timer() {
                     </div>
                 </div>
 
+                {/* component for choosing the timer sounds */}
+                <div className="audio-selects">
+                    <label>Timer Sound</label>
+                    <select className="selections">
+                        <option>First</option>
+                        <option>Second</option>
+                    </select>
+                </div>
+
+                {/* volume component for adjusting the audio for the timer song */}
                 <div className="volume"> 
                     {mute ? <VolumeOffIcon className="volume-icon" onClick={() => handleMute()}/> : 
                     <VolumeUpIcon className="volume-icon" onClick={() => handleMute()}/> }
@@ -247,7 +270,7 @@ function Timer() {
                         value={volume.curr}
                         onChange={handleVolume}
                     />
-                </div>
+                </div> 
 
                 <button 
                     className="save" 
