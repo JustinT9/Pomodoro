@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { Howl } from "howler"  
 import "./Timer.css"; 
 import nirvana from './audios/nirvana.mp3'; 
+import celebration from './audios/best_alarm.mp3'; 
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
 function Timer() {
-    const [pomoTime, setpomoTime] = useState({min: 25, sec: 0, decreasing: false, default: true}); 
+    const [pomoTime, setpomoTime] = useState({min: 1, sec: 0, decreasing: false, default: true}); 
     const [shortTime, setshortTime] = useState({min: 5, sec: 0, decreasing: false, default: true}); 
     const [longTime, setlongTime] = useState({min: 15, sec: 0, decreasing: false, default: true}); 
     const [time, setTime] = useState(pomoTime); 
@@ -18,17 +19,14 @@ function Timer() {
     const [automatic, setAutomatic] = useState(false); 
     const [customize, setCustomize] = useState(false); 
     const [mute, setMute] = useState(false); 
+    const [audioOn, setaudioOn] = useState(false); 
     const [volume, setVolume] = useState({prev: null, curr: null});
+    const [song, setSong] = useState(nirvana); 
     const [audio, setAudio] = useState(new Howl({
-        src: [nirvana], 
-        html5: true 
+        src: [song], 
+        html5: true, 
+        volume: 0.1
     }))
-
-
-    var sound = new Howl({
-        src: ['best_alarm.mp3'], 
-        volume: 0.5
-    })
 
     // to render the time display for the first time page is loaded or when it is decreasing in time  
     useEffect(() => {
@@ -96,12 +94,35 @@ function Timer() {
                     setTime((oldTime) => {return {...oldTime, min: oldTime.min-1, sec: 60}})
                 }
                 setTime((oldTime) => {return {...oldTime, sec: oldTime.sec-1}})
-            }, 1000)
+            }, 1)
             return () => {
                 clearTimeout(timeoutID); 
             }
         }       
     }, [time]) 
+
+    // plays the alarm of the ringtone chosen once the timer for the certain mode expires 
+    useEffect(() => {
+        if (time.min === 0 && time.sec === 0) {
+            audio.play(); 
+            setaudioOn(true);
+        }
+        
+        let timeElapsed = 0; 
+        if (audioOn) {
+            const intervalID = setInterval(() => {
+                if (timeElapsed === 3) {
+                    setaudioOn(false); 
+                    audio.stop(); 
+                    return () => {
+                        clearInterval(intervalID)
+                    };
+                }
+
+                timeElapsed += 1; 
+            }, 1000)
+        }
+    }, [time])
 
     // when the user hits start or pause 
     const handleTime = () => {
@@ -128,7 +149,6 @@ function Timer() {
 
     // when the user clicks reset 
     const handleReset = () => {
-        audio.play(); 
         if (mode === "pomodoro") {
             setTime(pomoTime);
         } else if (mode === "short") {
@@ -180,6 +200,12 @@ function Timer() {
         } else {
             setMute(false);
         }
+    }
+
+    const loadNewAlarm = (e) => {
+        audio.unload(); 
+        audio.src = e; 
+        audio.load(); 
     }
 
     return ( 
@@ -266,9 +292,10 @@ function Timer() {
                 {/* component for choosing the timer sounds */}
                 <div className="audio-selects">
                     <label>Timer Sound</label>
-                    <select className="selections">
-                        <option>First</option>
-                        <option>Second</option>
+                    <select className="selections" 
+                            onChange={(e) => loadNewAlarm(e.target.value)}>
+                        <option value={nirvana}>Nirvana</option>
+                        <option value={celebration}>Celebration</option>
                     </select>
                 </div>
 
