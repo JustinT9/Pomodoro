@@ -1,6 +1,7 @@
-import {Howl, Howler} from 'howler'; 
-import { useState, useEffect } from "react";  
+import { useState, useEffect } from "react";
+import { Howl } from "howler"  
 import "./Timer.css"; 
+import nirvana from './audios/nirvana.mp3'; 
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
@@ -18,6 +19,11 @@ function Timer() {
     const [customize, setCustomize] = useState(false); 
     const [mute, setMute] = useState(false); 
     const [volume, setVolume] = useState({prev: null, curr: null});
+    const [audio, setAudio] = useState(new Howl({
+        src: [nirvana], 
+        html5: true 
+    }))
+
 
     var sound = new Howl({
         src: ['best_alarm.mp3'], 
@@ -99,7 +105,7 @@ function Timer() {
 
     // when the user hits start or pause 
     const handleTime = () => {
-        if (!time.decreasing) {
+       if (!time.decreasing) {
             return setTime((oldTime) => {return {...oldTime, decreasing: true, default: false}})
         } else {
             return setTime((oldTime) => {return {...oldTime, decreasing: false}})
@@ -122,8 +128,7 @@ function Timer() {
 
     // when the user clicks reset 
     const handleReset = () => {
-        sound.play(); 
-
+        audio.play(); 
         if (mode === "pomodoro") {
             setTime(pomoTime);
         } else if (mode === "short") {
