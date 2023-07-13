@@ -1,3 +1,4 @@
+import {Howl, Howler} from 'howler'; 
 import { useState, useEffect } from "react";  
 import "./Timer.css"; 
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
@@ -17,6 +18,11 @@ function Timer() {
     const [customize, setCustomize] = useState(false); 
     const [mute, setMute] = useState(false); 
     const [volume, setVolume] = useState({prev: null, curr: null});
+
+    var sound = new Howl({
+        src: ['best_alarm.mp3'], 
+        volume: 0.5
+    })
 
     // to render the time display for the first time page is loaded or when it is decreasing in time  
     useEffect(() => {
@@ -116,13 +122,15 @@ function Timer() {
 
     // when the user clicks reset 
     const handleReset = () => {
+        sound.play(); 
+
         if (mode === "pomodoro") {
             setTime(pomoTime);
         } else if (mode === "short") {
             setTime(shortTime);
         } else if (mode === "long") {
             setTime(longTime); 
-        }
+        } 
     }
 
     // for when options are shown 
