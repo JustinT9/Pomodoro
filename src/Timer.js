@@ -3,13 +3,14 @@ import { Howl } from "howler"
 import "./Timer.css"; 
 import nirvana from './audios/nirvana.mp3'; 
 import celebration from './audios/best_alarm.mp3'; 
+import rooster from './audios/mixkit-rooster-crowing-in-the-morning-2462.wav';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
 function Timer() {
-    const [pomoTime, setpomoTime] = useState({min: 1, sec: 0, decreasing: false, default: true}); 
+    const [pomoTime, setpomoTime] = useState({min: 25, sec: 0, decreasing: false, default: true}); 
     const [shortTime, setshortTime] = useState({min: 5, sec: 0, decreasing: false, default: true}); 
     const [longTime, setlongTime] = useState({min: 15, sec: 0, decreasing: false, default: true}); 
     const [time, setTime] = useState(pomoTime); 
@@ -19,13 +20,10 @@ function Timer() {
     const [automatic, setAutomatic] = useState(false); 
     const [customize, setCustomize] = useState(false); 
     const [mute, setMute] = useState(false); 
-    const [volume, setVolume] = useState({prev: null, curr: null});
-    const [audioOn, setaudioOn] = useState(false); 
-    const [song, setSong] = useState(nirvana); 
-    const [audio, setAudio] = useState(new Howl({
-        src: [song], 
-        volume: 0.5, 
-    }))
+    const [volume, setVolume] = useState({prev: 0, curr: 50});
+    const [alarmOn, setalarmOn] = useState(false); 
+    const [audio, setAudio] = useState(nirvana); 
+    const [alarm, setAlarm] = useState(new Howl({src: [audio]}))
 
     // to render the time display for the first time page is loaded or when it is decreasing in time  
     useEffect(() => {
@@ -93,7 +91,7 @@ function Timer() {
                     setTime((oldTime) => {return {...oldTime, min: oldTime.min-1, sec: 60}})
                 }
                 setTime((oldTime) => {return {...oldTime, sec: oldTime.sec-1}})
-            }, 1)
+            }, 1000)
             return () => {
                 clearTimeout(timeoutID); 
             }
@@ -103,18 +101,17 @@ function Timer() {
     // plays the alarm of the ringtone chosen once the timer for the certain mode expires 
     useEffect(() => {
         if (time.min === 0 && time.sec === 0) {
-            console.log(audio); 
-            audio.play(); 
-            setaudioOn(true);
+            console.log(alarm); 
+            alarm.play(); 
+            setalarmOn(true);
         }
         
         let timeElapsed = 0; 
-        if (audioOn) {
+        if (alarmOn) {
             const intervalID = setInterval(() => {
                 if (timeElapsed === 3) {  
-                    clearInterval(intervalID)  
-                    setaudioOn(false); 
-                    audio.stop(); 
+                    setalarmOn(false); 
+                    alarm.stop(); 
                 }
                 timeElapsed += 1; 
             }, 1000)
@@ -123,6 +120,16 @@ function Timer() {
             }
         } 
     }, [time])
+
+    // updates the alarm audio 
+    useEffect(() => {
+        alarm.unload(); 
+        setAlarm(new Howl({
+            src: [audio], 
+            volume: volume.curr/100
+        }))
+        alarm.load(); 
+    }, [audio, volume])
 
     // when the user hits start or pause 
     const handleTime = () => {
@@ -200,12 +207,6 @@ function Timer() {
         } else {
             setMute(false);
         }
-    }
-
-    const loadNewAlarm = (e) => {
-        // audio.unload(); 
-        // audio.src = e; 
-        // audio.load(); 
     }
 
     return ( 
@@ -293,9 +294,11 @@ function Timer() {
                 <div className="audio-selects">
                     <label>Timer Sound</label>
                     <select className="selections" 
-                            onChange={(e) => loadNewAlarm(e.target.value)}>
+                            value={audio}
+                            onChange={(e) => setAudio(e.target.value)}>
                         <option value={nirvana}>Nirvana</option>
                         <option value={celebration}>Celebration</option>
+                        <option value={rooster}>Rooster</option>
                     </select>
                 </div>
 
