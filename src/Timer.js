@@ -103,6 +103,7 @@ function Timer() {
     // plays the alarm of the ringtone chosen once the timer for the certain mode expires 
     useEffect(() => {
         if (time.min === 0 && time.sec === 0) {
+            console.log(audio); 
             audio.play(); 
             setaudioOn(true);
         }
@@ -110,21 +111,16 @@ function Timer() {
         let timeElapsed = 0; 
         if (audioOn) {
             const intervalID = setInterval(() => {
-                if (timeElapsed === 3) {
+                if (timeElapsed === 3) {  
+                    clearInterval(intervalID)  
                     setaudioOn(false); 
                     audio.stop(); 
-                    audio.unload(); 
-                    setAudio(new Howl({
-                        src: [song], 
-                        volume: 0.5, 
-                    }))
-                    audio.load(); 
-                    return () => {
-                        clearInterval(intervalID)
-                    }
                 }
                 timeElapsed += 1; 
             }, 1000)
+            return () => {
+                clearInterval(intervalID)  
+            }
         } 
     }, [time])
 
