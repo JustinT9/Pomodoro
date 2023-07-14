@@ -25,7 +25,7 @@ function Timer() {
     const [audio, setAudio] = useState(new Howl({
         src: [song], 
         html5: true, 
-        volume: 0.1
+        volume: 0.5
     }))
 
     // to render the time display for the first time page is loaded or when it is decreasing in time  
@@ -113,7 +113,7 @@ function Timer() {
             const intervalID = setInterval(() => {
                 if (timeElapsed === 3) {
                     setaudioOn(false); 
-                    audio.stop(); 
+                    audio.stop();  
                     return () => {
                         clearInterval(intervalID)
                     };
@@ -203,9 +203,14 @@ function Timer() {
     }
 
     const loadNewAlarm = (e) => {
-        audio.unload(); 
-        audio.src = e; 
-        audio.load(); 
+        setAudio((oldAudio) => {
+            oldAudio.unload();
+            console.log(e); 
+            oldAudio.src = e;
+            oldAudio.load(); 
+            setSong(e); 
+            return oldAudio; 
+        }); 
     }
 
     return ( 
@@ -292,7 +297,8 @@ function Timer() {
                 {/* component for choosing the timer sounds */}
                 <div className="audio-selects">
                     <label>Timer Sound</label>
-                    <select className="selections" 
+                    <select className="selections"
+                            value={song} 
                             onChange={(e) => loadNewAlarm(e.target.value)}>
                         <option value={nirvana}>Nirvana</option>
                         <option value={celebration}>Celebration</option>
