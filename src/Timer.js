@@ -19,11 +19,12 @@ function Timer() {
     const [automatic, setAutomatic] = useState(false); 
     const [customize, setCustomize] = useState(false); 
     const [mute, setMute] = useState(false); 
-    const [audioOn, setaudioOn] = useState(false); 
     const [volume, setVolume] = useState({prev: null, curr: null});
+    const [audioOn, setaudioOn] = useState(false); 
     const [song, setSong] = useState(nirvana); 
     const [audio, setAudio] = useState(new Howl({
         src: [song], 
+        volume: 0.5, 
     }))
 
     // to render the time display for the first time page is loaded or when it is decreasing in time  
@@ -112,14 +113,19 @@ function Timer() {
                 if (timeElapsed === 3) {
                     setaudioOn(false); 
                     audio.stop(); 
+                    audio.unload(); 
+                    setAudio(new Howl({
+                        src: [song], 
+                        volume: 0.5, 
+                    }))
+                    audio.load(); 
                     return () => {
                         clearInterval(intervalID)
-                    };
+                    }
                 }
-
                 timeElapsed += 1; 
             }, 1000)
-        }
+        } 
     }, [time])
 
     // when the user hits start or pause 
@@ -201,9 +207,9 @@ function Timer() {
     }
 
     const loadNewAlarm = (e) => {
-        audio.unload(); 
-        audio.src = e; 
-        audio.load(); 
+        // audio.unload(); 
+        // audio.src = e; 
+        // audio.load(); 
     }
 
     return ( 
