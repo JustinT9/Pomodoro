@@ -24,8 +24,6 @@ function Timer() {
     const [song, setSong] = useState(nirvana); 
     const [audio, setAudio] = useState(new Howl({
         src: [song], 
-        html5: true, 
-        volume: 0.1
     }))
 
     // to render the time display for the first time page is loaded or when it is decreasing in time  
